@@ -5,16 +5,101 @@ import Breadcrumb from "@/components/Breadcrumb.astro";
 import Section from "@/components/Section.astro";
 import BlogPostCard from "@/components/BlogPostCard.astro";
 import Layout from "@/layouts/Layout.astro";
-import { KNOWN_TECH, ABOUT_ME } from "@/consts";
+import { KNOWN_TECH, ABOUT_ME, QUOTE } from "@/consts";
+import WorksList from "@/components/WorksList.astro";
+import Parser from "rss-parser";
+
+/*
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+*/
+
+// 記事データの型を定義
+interface NotePost {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+  };
+}
+
+const parser = new Parser();
+const NOTE_RSS_URL = "https://note.com/np7096/rss";
+
+let posts: NotePost[] = [];
+
+
+try {
+  const feed = await parser.parseURL(NOTE_RSS_URL);
+  posts = feed.items
+    .filter(item => item.link && item.title && item.pubDate)
+    .map(item => ({
+      id: item.link!, // noteの記事URL
+      data: {
+        title: item.title!,
+        description: item.contentSnippet?.slice(0, 100) + "...", // 冒頭100文字
+        pubDate: new Date(item.pubDate!),
+      }
+    }));
+} catch (error) {
+  console.error("noteのデータ取得に失敗しました:", error);
+}
+
+
+const mutualLinks = [
+  { name: "まだ誰もいないよ", url: "#" },
+  { name: "hogehoge", url: "#" },
+];
+
+// Simple Iconsのスラッグ調整用マップ
+const techIconMap: Record<string, string> = {
+  "Javascript": "javascript",
+  "Typescript": "typescript",
+  "CSS": "css",
+  "HTML5": "html5",
+  "C++": "cplusplus",
+  "C#": "/src/assets/csharp-logo.svg",
+  "PowerPC": "/src/assets/PowerPC_icon.png",
+};
+
+
+
+// 重複を除去
+const uniqueTech = [...new Set(KNOWN_TECH.map(t => t.trim()))];
+
+const aboutMeCards = [
+  { 
+    title: "What am I?", 
+    description: [
+      "電気通信大学 情報理工学域 Ⅰ類のNp / えぬぴーです。",
+      "Switch 向けの Homebrew 開発と M.U.G.E.N のキャラクター制作をやってました (キャラクターは未完)。",
+      "最近はArchのRicingとこのサイトに使っているAstroを始めて両方の沼にずっぷりといきました最高です",
+      "あとblenderも勉強中です。アニメキャラを完成させるのが目標です",
+      "いろいろなものを作っていきたいです (ovo)"
+    ]
+  },
+  { title: "Language I have used", tech: uniqueTech },
+  {
+    title: "My Fav",
+    hobbies: [
+      { label: "Game", value: "OSU!, SOUND VOLTEX, Beatmania IIDX, SPLATOON (無印〜3), M.U.G.E.N" },
+      { label: "Artist", value: "Yunomi, LanPage, かねこちはる, Halv, かたぎり" },
+      { label: "Misc", value: "アニメ〜〜🤞" },
+    ]
+  },
+  //{ title: "書きそうな記事の分野", content: "技術備忘録, M.U.G.E.N 開発進捗, 大学生活" },
+  { title: "コンタクト", content: "Twitter(X): @np_mugen / GitHub: enupi" },
+  { title: "PC環境", content: "Windows Desktop (自作) / MacBook Air" },
+];
+
 ---
 
-<Layout title="Token - Astro + Tailwind Portfolio Template">
+<Layout title="Np's pages">
   <Hero />
   <Section
-    title="My Posts"
+    title="New Posts"
     className={"bg-gradient-to-b from-black/70 from-[5%] to-black via-black"}
   >
     <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -30,6 +115,81 @@ const posts = (await getCollection("blog")).sort(
       }
     </div>
   </Section>
+  
+  <Section
+    title="Works"
+    id="work"
+  >
+    <WorksList />
+  </Section>
+  
+  <Section
+  title="Links"
+  id="link"
+  >
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {
+        mutualLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-all hover:border-zinc-600 hover:bg-zinc-900 group"
+          >
+            <span class="text-zinc-400 group-hover:text-white font-medium transition-colors">
+              {link.name}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section title="About Me" id="about">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        aboutMeCards.map((item) => (
+          <div class="p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-all hover:border-zinc-700">
+            <h3 class="text-blue-400 font-bold mb-4 text-xl uppercase tracking-widest border-b border-zinc-800 pb-2">
+              {item.title}
+            </h3>
+            {item.tech ? (
+              <div class="flex flex-wrap gap-4">
+                {item.tech.map((name) => {
+                  const iconSlug = techIconMap[name] || name.toLowerCase();
+                  const isLocal = iconSlug.startsWith("/");
+                  return (
+                    <img 
+                      src={isLocal ? iconSlug : `https://cdn.simpleicons.org/${iconSlug}/white`} 
+                      alt={name} 
+                      title={name}
+                      class={`w-14 h-14 opacity-70 hover:opacity-100 transition-opacity ${isLocal ? "grayscale invert" : ""}`}
+                    />
+                  );
+                })}
+              </div>
+            ) : item.hobbies ? (
+              <div class="space-y-3 text-sm text-zinc-300">
+                {item.hobbies.map((hobby) => (
+                  <div>
+                    <span class="block text-sm text-blue-400/60 font-bold uppercase tracking-tighter mb-1">{hobby.label}</span>
+                    <span class="leading-relaxed">{hobby.value}</span>
+                  </div>
+                ))}
+              </div>
+            ) : item.description ? (
+              <div class="space-y-2 text-zinc-300 text-sm leading-relaxed">
+                {item.description.map((line) => <p>{line}</p>)}
+              </div>
+            ) : (
+              <p class="text-zinc-300 text-sm leading-relaxed">{item.content}</p>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+<!--
   <Section title="Technologies I Know" full_screen={false}>
     <div class="w-full grid place-items-center">
       <div
@@ -39,6 +199,7 @@ const posts = (await getCollection("blog")).sort(
       </div>
     </div>
   </Section>
+
   <Section title="About Me">
     <div class="w-full grid place-items-center">
       <div
@@ -48,4 +209,15 @@ const posts = (await getCollection("blog")).sort(
       </div>
     </div>
   </Section>
+-->
 </Layout>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+  /* アンカーリンクでスクロールした際、ヘッダーに隠れないように位置を調整 */
+  #work, #link, #about {
+    scroll-margin-top: 5rem;
+  }
+</style>

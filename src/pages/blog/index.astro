@@ -3,14 +3,58 @@ import { getCollection } from "astro:content";
 import BlogPostCard from "@/components/BlogPostCard.astro";
 import Section from "@/components/Section.astro";
 import Layout from "@/layouts/Layout.astro";
+import Parser from "rss-parser";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+// 記事データの型を定義
+interface NotePost {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+  };
+}
+
+const parser = new Parser();
+const NOTE_RSS_URL = "https://note.com/np7096/rss";
+
+let posts: NotePost[] = [];
+
+/*
+try {
+  const feed = await parser.parseURL(NOTE_RSS_URL);
+  posts = feed.items
+    .filter(item => item.link && item.title && item.pubDate)
+    .map(item => ({
+      id: item.link!, // noteの記事URL
+      data: {
+        title: item.title!,
+        description: item.contentSnippet?.slice(0, 100) + "...", // 冒頭100文字
+        pubDate: new Date(item.pubDate!),
+      }
+    }));
+} catch (error) {
+  console.error("noteのデータ取得に失敗しました:", error);
+}
+*/
+
+try {
+  const feed = await parser.parseURL(NOTE_RSS_URL);
+  posts = feed.items.map((item) => ({
+    id: item.link ?? "",
+    data: {
+      title: item.title ?? "無題",
+      description: item.contentSnippet?.replace(/\n/g, " ").slice(0, 150) ?? "", 
+      pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
+    }
+  })).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()); // 新しい順にソート
+} catch (e) {
+  console.error(e);
+}
 ---
 
-<Layout title="My Own Blog Posts">
-  <Section title="My Blog Posts">
+<Layout title="Blog">
+<!--  <Section title="My Blog Posts">
     <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
       {
         posts.map((post) => (
@@ -24,4 +68,61 @@ const posts = (await getCollection("blog")).sort(
       }
     </div>
   </Section>
+-->
+
+<main class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-white">Blog Posts</h1>
+
+    <div class="mb-10">
+      <input 
+        type="text" 
+        id="search-bar" 
+        placeholder="記事を検索..." 
+        class="w-full p-3 rounded-lg bg-zinc-900 border border-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div id="post-list" class="flex flex-col gap-6">
+      {posts.map((post) => (
+        <article class="post-item bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 flex flex-col gap-2 transition-all hover:border-zinc-600">
+          <h2 class="text-xl font-bold text-white">{post.data.title}</h2>
+          <time class="text-sm text-zinc-400">
+            {post.data.pubDate.toLocaleDateString('ja-JP')}
+          </time>
+          <p class="text-zinc-300 text-sm line-clamp-1">
+            {post.data.description}
+          </p>
+          <div class="mt-2">
+            <a 
+              href={post.id} 
+              target="_blank" 
+              class="inline-block bg-white text-black px-4 py-1.5 rounded-full text-sm font-medium hover:bg-zinc-200 transition-colors"
+            >
+              Read more
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
 </Layout>
+
+<script>
+  const searchBar = document.getElementById('search-bar') as HTMLInputElement;
+  const postItems = document.querySelectorAll('.post-item');
+
+  searchBar?.addEventListener('input', (e) => {
+    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+
+    postItems.forEach((item) => {
+      const title = item.querySelector('h2')?.textContent?.toLowerCase() || "";
+      const description = item.querySelector('p')?.textContent?.toLowerCase() || "";
+      
+      if (title.includes(searchTerm) || description.includes(searchTerm)) {
+        (item as HTMLElement).style.display = 'flex';
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
+    });
+  });
+</script>

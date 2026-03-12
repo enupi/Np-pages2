@@ -7,7 +7,6 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 
 const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 ---
-
 <html lang="en" class="!overflow-x-hidden">
   <head>
     <BaseHead title={title} description={description} />
@@ -19,3 +18,26 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
     <footer class="w-screen bottom-0 overflow-x-hidden"><Footer /></footer>
   </body>
 </html>
+
+<style is:global>
+  @font-face {
+    font-family: 'MyCustomFont';
+    src: url('/fonts/DotGothic16-Regular.ttf') format('truetype'); /* OTFの場合は format('opentype') */
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+3000-30FF, U+4E00-9FFF, U+FF00-FFEF;
+  }
+
+  @font-face {
+    font-family: 'VCRFont';
+    src: url('/fonts/VCRosdNEUE.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  body {
+    font-family: 'MyCustomFont', 'VCRFont', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  }
+</style>

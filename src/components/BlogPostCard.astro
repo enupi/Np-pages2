@@ -10,7 +10,7 @@ const { title, slug, excerpt, date } = Astro.props;
 ---
 
 <div
-  class="w-full mx-auto bg-gradient-to-br relative pb-5 from-white/[0.001] to-white/[0.01] border-2 border-white rounded-lg overflow-hidden"
+  class="w-full max-w-xl mx-auto bg-gradient-to-br relative pb-5 from-white/[0.001] to-white/[0.01] border-2 border-white rounded-lg overflow-hidden"
 >
   <div class="flex items-center justify-start px-4 py-2 bg-white/95">
     <div class="flex space-x-2">
@@ -21,7 +21,7 @@ const { title, slug, excerpt, date } = Astro.props;
   </div>
 
   <div class="p-6 tracking-wider">
-    <a href={`/blog/${slug}`} class="block group">
+    <a href={`${slug}`} class="block group">
       <h2 class="text-xl font-medium text-white mb-2">
         <span class="ba text-white/70 mr-2">❯</span>
         {title}
