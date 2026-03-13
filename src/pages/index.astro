@@ -22,6 +22,7 @@ interface NotePost {
     title: string;
     description: string;
     pubDate: Date;
+    image?: string;
   };
 }
 
@@ -41,16 +42,28 @@ try {
         title: item.title!,
         description: item.contentSnippet?.slice(0, 100) + "...", // 冒頭100文字
         pubDate: new Date(item.pubDate!),
+        image: item.enclosure?.url,
       }
     }));
 } catch (error) {
   console.error("noteのデータ取得に失敗しました:", error);
 }
 
+const socialLinks = [
+  { name: "Daily", url: "https://x.com/Np27182", icon: "/src/assets/Logo_of_Twitter.svg.png" },
+  { name: "Tech", url: "https://x.com/Np271828", icon: "/src/assets/Logo_of_Twitter.svg.png" },
+  { name: "MUGEN", url: "https://x.com/np_mugen", icon: "/src/assets/Logo_of_Twitter.svg.png" },
+  { name: "GitHub", url: "https://github.com/enupi", icon: "github" },
+  { name: "Note", url: "https://note.com/np7096", icon: "/src/assets/Logo_of_Note.svg" },
+  { name: "Osu!", url: "https://osu.ppy.sh/users/27981771", icon: "osu"},
+];
 
 const mutualLinks = [
   { name: "まだ誰もいないよ", url: "#" },
   { name: "hogehoge", url: "#" },
+  { name: "gehogeho", url: "#" },
+  
+
 ];
 
 // Simple Iconsのスラッグ調整用マップ
@@ -71,33 +84,62 @@ const uniqueTech = [...new Set(KNOWN_TECH.map(t => t.trim()))];
 
 const aboutMeCards = [
   { 
-    title: "What am I?", 
+    title: "What am I ?", 
     description: [
-      "電気通信大学 情報理工学域 Ⅰ類のNp / えぬぴーです。",
-      "Switch 向けの Homebrew 開発と M.U.G.E.N のキャラクター制作をやってました (キャラクターは未完)。",
-      "最近はArchのRicingとこのサイトに使っているAstroを始めて両方の沼にずっぷりといきました最高です",
-      "あとblenderも勉強中です。アニメキャラを完成させるのが目標です",
-      "いろいろなものを作っていきたいです (ovo)"
+      "電気通信大学 情報理工学域 Ⅰ類の Np / えぬぴーです。",
+      "Switch 向けの Homebrew 開発と M.U.G.E.N のキャラクター制作をしています。",
+      "最近は Arch の Ricingとこのサイトに使っている Astro を始めて両方の沼に沈んでます。",
+      "blender も勉強中です。今はアニメキャラを作ってます。",
+      "いろんなものを作っていきたいです (ovo)"
     ]
   },
-  { title: "Language I have used", tech: uniqueTech },
   {
-    title: "My Fav",
+    title: "My Fave",
     hobbies: [
-      { label: "Game", value: "OSU!, SOUND VOLTEX, Beatmania IIDX, SPLATOON (無印〜3), M.U.G.E.N" },
-      { label: "Artist", value: "Yunomi, LanPage, かねこちはる, Halv, かたぎり" },
+      { label: "Game", value: "Osu!, SOUND VOLTEX, Beatmania IIDX, アークナイツ：エンドフィールド, SPLATOON (無印〜3), M.U.G.E.N" },
+      { label: "Artist", value: "Yunomi, LanPage, Snail's House, かぼちゃ, EmoCosine, かねこちはる, かめりあ, かたぎり, t+pazolite, kobaryo, 7_7, somunia, をとは, ななひら, ころねぽち, ちょこ, 月詠み, 妖精帝國, ClariS, ChouCho, 鈴木このみ" },
       { label: "Misc", value: "アニメ〜〜🤞" },
     ]
   },
+  { title: "Language I have used", tech: uniqueTech },
+  //{ title: "PC環境", content: "Windows Desktop (自作) / MacBook Air" },
+
   //{ title: "書きそうな記事の分野", content: "技術備忘録, M.U.G.E.N 開発進捗, 大学生活" },
-  { title: "コンタクト", content: "Twitter(X): @np_mugen / GitHub: enupi" },
-  { title: "PC環境", content: "Windows Desktop (自作) / MacBook Air" },
+  { title: "Contact", content: '重要な連絡は Twitter (<a href="https://x.com/Np271828" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline underline-offset-4 hover:text-blue-300 transition-colors">@Np271828</a>) のDMにお願いします' },
+  
 ];
 
 ---
 
 <Layout title="Np's pages">
   <Hero />
+
+  <div class="w-full bg-black py-10 border-y border-zinc-900/50">
+    <div class="max-w-6xl mx-auto px-6 flex justify-center gap-8 md:gap-16">
+      {
+        socialLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex flex-col items-center gap-3 transition-all"
+          >
+            <div class="p-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl group-hover:border-blue-400 group-hover:bg-zinc-800 group-hover:-translate-y-1 transition-all duration-300 flex items-center justify-center">
+              <img
+                src={link.icon.startsWith("/") ? link.icon : `https://cdn.simpleicons.org/${link.icon}/white`}
+                alt={link.name}
+                class={`w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain ${link.icon.startsWith("/") ? "grayscale invert" : ""}`}
+              />
+            </div>
+            <span class="text-[10px] md:text-xs text-zinc-500 font-bold uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors">
+              {link.name}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
   <Section
     title="New Posts"
     className={"bg-gradient-to-b from-black/70 from-[5%] to-black via-black"}
@@ -110,9 +152,19 @@ const aboutMeCards = [
             title={post.data.title}
             excerpt={post.data.description}
             date={post.data.pubDate}
+            image={post.data.image}
           />
         ))
       }
+    </div>
+    <div class="mt-8 text-center">
+      <a href="/blog"
+         class="inline-flex items-center px-6 py-3 border border-blue-400 text-blue-400 font-bold uppercase tracking-widest rounded-md hover:bg-blue-400 hover:text-black transition-colors duration-300">
+        View All Notes
+        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </a>
     </div>
   </Section>
   
@@ -136,7 +188,7 @@ const aboutMeCards = [
             rel="noopener noreferrer"
             class="flex items-center justify-center p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-all hover:border-zinc-600 hover:bg-zinc-900 group"
           >
-            <span class="text-zinc-400 group-hover:text-white font-medium transition-colors">
+            <span class="text-lg text-zinc-400 group-hover:text-white font-medium transition-colors">
               {link.name}
             </span>
           </a>
@@ -146,10 +198,13 @@ const aboutMeCards = [
   </Section>
 
   <Section title="About Me" id="about">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
       {
         aboutMeCards.map((item) => (
-          <div class="p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-all hover:border-zinc-700">
+          <div class:list={[
+            "p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl transition-all hover:border-zinc-700",
+            { "md:col-span-2": item.title === "What am I ?" || item.title === "Contact" }
+          ]}>
             <h3 class="text-blue-400 font-bold mb-4 text-xl uppercase tracking-widest border-b border-zinc-800 pb-2">
               {item.title}
             </h3>
@@ -169,20 +224,20 @@ const aboutMeCards = [
                 })}
               </div>
             ) : item.hobbies ? (
-              <div class="space-y-3 text-sm text-zinc-300">
+              <div class="space-y-3 text-base text-zinc-300">
                 {item.hobbies.map((hobby) => (
                   <div>
-                    <span class="block text-sm text-blue-400/60 font-bold uppercase tracking-tighter mb-1">{hobby.label}</span>
-                    <span class="leading-relaxed">{hobby.value}</span>
+                    <span class="block text-base text-blue-300/100 font-bold uppercase tracking-tighter mb-1">{hobby.label}</span>
+                    <span class="text-base leading-relaxed">{hobby.value}</span>
                   </div>
                 ))}
               </div>
             ) : item.description ? (
-              <div class="space-y-2 text-zinc-300 text-sm leading-relaxed">
+              <div class="space-y-2 text-zinc-300 text-base leading-relaxed">
                 {item.description.map((line) => <p>{line}</p>)}
               </div>
             ) : (
-              <p class="text-zinc-300 text-sm leading-relaxed">{item.content}</p>
+              <p class="text-zinc-300 text-base leading-relaxed" set:html={item.content}></p>
             )}
           </div>
         ))
@@ -220,4 +275,64 @@ const aboutMeCards = [
   #work, #link, #about {
     scroll-margin-top: 5rem;
   }
+
+  .expandable-wrapper.expanded {
+    max-height: 2000px; /* 十分な高さを確保 */
+  }
 </style>
+
+<script>
+  function setupExpandableCards() {
+    const wrappers = document.querySelectorAll('.expandable-wrapper');
+    const isFirstTime = !(window as any)._expandableCardsInitialized;
+
+    wrappers.forEach(wrapper => {
+      const button = wrapper.nextElementSibling as HTMLElement;
+      if (!button || !button.classList.contains('expand-btn')) return;
+
+      const card = wrapper.closest('.bg-zinc-900\\/50') as HTMLElement;
+      if (!card) return;
+
+      const checkOverflow = (targetWrapper: Element, targetButton: HTMLElement, targetCard: HTMLElement) => {
+        if (wrapper.classList.contains('expanded')) return;
+        // clientHeight(160px) に対して実際のコンテンツ(scrollHeight)が大きいか
+        if (targetWrapper.scrollHeight > targetWrapper.clientHeight) {
+          targetButton.classList.remove('hidden');
+          targetCard.classList.add('cursor-pointer');
+        } else {
+          targetButton.classList.add('hidden');
+          targetCard.classList.remove('cursor-pointer');
+        }
+      };
+
+      // 初回実行時のみリスナーを登録
+      if (isFirstTime) {
+        window.addEventListener('resize', () => checkOverflow(wrapper, button, card));
+        card.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('a')) return;
+          if (button.classList.contains('hidden') && !wrapper.classList.contains('expanded')) return;
+
+          const isExpanded = wrapper.classList.toggle('expanded');
+          button.querySelector('.btn-text')!.textContent = isExpanded ? 'Back' : 'See More';
+          button.querySelector('.btn-icon')!.textContent = isExpanded ? '↑' : '↓';
+          
+          if (!isExpanded) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      }
+
+      // 表示状態のチェックを実行（少し遅延させてレイアウト確定を待つ）
+      requestAnimationFrame(() => checkOverflow(wrapper, button, card));
+    });
+
+    (window as any)._expandableCardsInitialized = true;
+  }
+
+  // 通常のロード時
+  setupExpandableCards();
+
+  // ブラウザの「戻る」で戻った時（bfcache対応）
+  window.addEventListener('pageshow', setupExpandableCards);
+</script>

@@ -12,6 +12,7 @@ interface NotePost {
     title: string;
     description: string;
     pubDate: Date;
+    image?: string;
   };
 }
 
@@ -46,6 +47,7 @@ try {
       title: item.title ?? "無題",
       description: item.contentSnippet?.replace(/\n/g, " ").slice(0, 150) ?? "", 
       pubDate: item.pubDate ? new Date(item.pubDate) : new Date(),
+      image: item.enclosure?.url,
     }
   })).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()); // 新しい順にソート
 } catch (e) {
@@ -82,26 +84,17 @@ try {
       />
     </div>
 
-    <div id="post-list" class="flex flex-col gap-6">
+    <div id="post-list" class="grid grid-cols-1 gap-6">
       {posts.map((post) => (
-        <article class="post-item bg-zinc-900/50 p-6 rounded-xl border border-zinc-800 flex flex-col gap-2 transition-all hover:border-zinc-600">
-          <h2 class="text-xl font-bold text-white">{post.data.title}</h2>
-          <time class="text-sm text-zinc-400">
-            {post.data.pubDate.toLocaleDateString('ja-JP')}
-          </time>
-          <p class="text-zinc-300 text-sm line-clamp-1">
-            {post.data.description}
-          </p>
-          <div class="mt-2">
-            <a 
-              href={post.id} 
-              target="_blank" 
-              class="inline-block bg-white text-black px-4 py-1.5 rounded-full text-sm font-medium hover:bg-zinc-200 transition-colors"
-            >
-              Read more
-            </a>
-          </div>
-        </article>
+        <div class="post-item">
+          <BlogPostCard
+            slug={post.id}
+            title={post.data.title}
+            excerpt={post.data.description}
+            date={post.data.pubDate}
+            image={post.data.image}
+          />
+        </div>
       ))}
     </div>
   </main>
@@ -115,7 +108,7 @@ try {
     const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
 
     postItems.forEach((item) => {
-      const title = item.querySelector('h2')?.textContent?.toLowerCase() || "";
+      const title = item.querySelector('h4')?.textContent?.toLowerCase() || "";
       const description = item.querySelector('p')?.textContent?.toLowerCase() || "";
       
       if (title.includes(searchTerm) || description.includes(searchTerm)) {
