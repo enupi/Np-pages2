@@ -12,6 +12,8 @@ import { Image } from "astro:assets";
 import risajuIcon from "@/assets/risaju.png";
 import twitterIcon from "@/assets/Logo_of_Twitter.svg.png";
 import noteIcon from "@/assets/Logo_of_Note.svg";
+import powerpcIcon from "@/assets/PowerPC_icon.png";
+import csharpIcon from "@/assets/csharp-logo.svg";
 
 /*
 const posts = (await getCollection("blog")).sort(
@@ -74,14 +76,14 @@ const mutualLinks = [
 ];
 
 // Simple Iconsのスラッグ調整用マップ
-const techIconMap: Record<string, string> = {
+const techIconMap: Record<string, any> = {
   "Javascript": "javascript",
   "Typescript": "typescript",
   "CSS": "css",
   "HTML5": "html5",
   "C++": "cplusplus",
-  "C#": "/csharp-logo.svg",
-  "PowerPC": "/PowerPC_icon.png",
+  "C#": csharpIcon,
+  "PowerPC": powerpcIcon,
 };
 
 
@@ -228,14 +230,22 @@ const aboutMeCards = [
             {item.tech ? (
               <div class="flex flex-wrap gap-4">
                 {item.tech.map((name) => {
-                  const iconSlug = techIconMap[name] || name.toLowerCase();
-                  const isLocal = iconSlug.startsWith("/");
-                  return (
-                    <img 
-                      src={isLocal ? iconSlug : `https://cdn.simpleicons.org/${iconSlug}/white`} 
-                      alt={name} 
+                  const iconData = techIconMap[name] || name.toLowerCase();
+                  return typeof iconData === "string" ? (
+                    <img
+                      src={iconData.startsWith("/") ? iconData : `https://cdn.simpleicons.org/${iconData}/white`}
+                      alt={name}
                       title={name}
-                      class={`w-14 h-14 opacity-70 hover:opacity-100 transition-opacity ${isLocal ? "grayscale invert" : ""}`}
+                      class={`w-14 h-14 opacity-70 hover:opacity-100 transition-opacity ${iconData.startsWith("/") ? "grayscale invert" : ""}`}
+                    />
+                  ) : (
+                    <Image
+                      src={iconData}
+                      alt={name}
+                      title={name}
+                      width={56}
+                      height={56}
+                      class="w-14 h-14 opacity-70 hover:opacity-100 transition-opacity grayscale invert"
                     />
                   );
                 })}
