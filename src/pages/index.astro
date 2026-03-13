@@ -8,6 +8,8 @@ import Layout from "@/layouts/Layout.astro";
 import { KNOWN_TECH, ABOUT_ME, QUOTE } from "@/consts";
 import WorksList from "@/components/WorksList.astro";
 import Parser from "rss-parser";
+import { Image } from "astro:assets";
+import risajuIcon from "@/assets/risaju.png";
 
 /*
 const posts = (await getCollection("blog")).sort(
@@ -50,12 +52,14 @@ try {
 }
 
 const socialLinks = [
-  { name: "Daily", url: "https://x.com/Np27182", icon: "/Logo_of_Twitter.svg.png" },
-  { name: "Tech", url: "https://x.com/Np271828", icon: "/Logo_of_Twitter.svg.png" },
-  { name: "MUGEN", url: "https://x.com/np_mugen", icon: "/Logo_of_Twitter.svg.png" },
+  { name: "Daily", url: "https://x.com/Np27182", icon: "/src/assets/Logo_of_Twitter.svg.png" },
+  { name: "Tech", url: "https://x.com/Np271828", icon: "/src/assets/Logo_of_Twitter.svg.png" },
+  { name: "MUGEN", url: "https://x.com/np_mugen", icon: "/src/assets/Logo_of_Twitter.svg.png" },
   { name: "GitHub", url: "https://github.com/enupi", icon: "github" },
   { name: "Note", url: "https://note.com/np7096", icon: "/Logo_of_Note.svg" },
   { name: "Osu!", url: "https://osu.ppy.sh/users/27981771", icon: "osu"},
+  // インポートした画像を直接指定する
+  { name: "Risaju", url: "#", icon: risajuIcon },
 ];
 
 const mutualLinks = [
@@ -125,11 +129,21 @@ const aboutMeCards = [
             class="group flex flex-col items-center gap-3 transition-all"
           >
             <div class="p-4 bg-zinc-900/50 border border-zinc-800 rounded-2xl group-hover:border-blue-400 group-hover:bg-zinc-800 group-hover:-translate-y-1 transition-all duration-300 flex items-center justify-center">
-              <img
-                src={link.icon.startsWith("/") ? link.icon : `https://cdn.simpleicons.org/${link.icon}/white`}
-                alt={link.name}
-                class={`w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain ${link.icon.startsWith("/") ? "grayscale invert" : ""}`}
-              />
+              {typeof link.icon === 'string' ? (
+                <img
+                  src={link.icon.startsWith("/") ? link.icon : `https://cdn.simpleicons.org/${link.icon}/white`}
+                  alt={link.name}
+                  class={`w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain ${link.icon.startsWith("/") ? "grayscale invert" : ""}`}
+                />
+              ) : (
+                <Image
+                  src={link.icon}
+                  alt={link.name}
+                  width={40}
+                  height={40}
+                  class="w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain"
+                />
+              )}
             </div>
             <span class="text-[10px] md:text-xs text-zinc-500 font-bold uppercase tracking-[0.2em] group-hover:text-blue-400 transition-colors">
               {link.name}
