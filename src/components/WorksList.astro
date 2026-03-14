@@ -17,7 +17,7 @@ const hblApps = [
 const mugenCharacters = [
   {
     name: "りさじゅう",
-    image: csharpLogo,
+    image: "/assets/csharp-logo.svg",
     progress: 0.5,
     lastUpdated: "2025.12.22",
     twitter: "https://x.com/np_mugen",
@@ -75,14 +75,23 @@ const mugenCharacters = [
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {mugenCharacters.map((char) => (
         <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-600 transition-colors">
-          <Image 
-            src={char.image} 
-            alt={char.name}
-            width={400}
-            height={533}
-            class="w-full aspect-[3/4] object-cover object-top opacity-80 hover:opacity-100 transition-opacity" 
-            style="image-rendering: pixelated;"
-          />
+          {typeof char.image === "string" ? (
+            <img
+              src={char.image}
+              alt={char.name}
+              class="w-full aspect-[3/4] object-cover object-top opacity-80 hover:opacity-100 transition-opacity"
+              style="image-rendering: pixelated;"
+            />
+          ) : (
+            <Image
+              src={char.image}
+              alt={char.name}
+              width={400}
+              height={533}
+              class="w-full aspect-[3/4] object-cover object-top opacity-80 hover:opacity-100 transition-opacity"
+              style="image-rendering: pixelated;"
+            />
+          )}
           <div class="p-3">
             <div class="text-xs text-purple-400/80 font-mono mb-1 tracking-widest uppercase">
               Updated: {char.lastUpdated}
