@@ -125,14 +125,14 @@ const aboutMeCards = [
   </div>
 
   <div class="w-full bg-zinc-50 dark:bg-black py-10 border-y border-zinc-200 dark:border-zinc-900/50 transition-colors">
-    <div class="max-w-6xl mx-auto px-6 flex justify-center gap-8 md:gap-16">
+    <div class="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-x-8 gap-y-10 md:gap-x-16">
       {
         socialLinks.map((link) => (
           <a
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="group flex flex-col items-center gap-3 transition-all"
+            class="group flex flex-col items-center gap-3 transition-all shrink-0"
           >
             <div class="p-4 bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl group-hover:border-blue-400 group-hover:bg-zinc-100 dark:group-hover:bg-zinc-800 group-hover:-translate-y-1 transition-all duration-300 flex items-center justify-center shadow-sm dark:shadow-none">
               {typeof link.icon === 'string' ? (
