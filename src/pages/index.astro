@@ -108,7 +108,7 @@ const aboutMeCards = [
       { label: "Misc", value: "アニメ〜〜🤞" },
     ]
   },
-  { title: "Language I have used", tech: uniqueTech },
+  { title: "Language I Use", tech: uniqueTech },
   //{ title: "PC環境", content: "Windows Desktop (自作) / MacBook Air" },
 
   //{ title: "書きそうな記事の分野", content: "技術備忘録, M.U.G.E.N 開発進捗, 大学生活" },
@@ -136,7 +136,7 @@ const aboutMeCards = [
                 <img
                   src={link.icon.startsWith("/") ? link.icon : `https://cdn.simpleicons.org/${link.icon}/white`}
                   alt={link.name}
-                  class={`w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain ${link.icon.startsWith("/") ? "grayscale invert" : ""}`}
+                  class={`w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain ${link.icon.startsWith("/") ? "brightness-0 invert" : ""}`}
                 />
               ) : (
                 <Image
@@ -144,7 +144,7 @@ const aboutMeCards = [
                   alt={link.name}
                   width={40}
                   height={40}
-                  class="w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain"
+                  class="w-8 h-8 md:w-10 md:h-10 opacity-70 group-hover:opacity-100 transition-opacity object-contain brightness-0 invert"
                 />
               )}
             </div>
