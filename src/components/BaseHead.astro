@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "@/styles/global.css";
+import ogImage from "@/hero.png";
 
 interface Props {
   title: string;
@@ -13,7 +14,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
   title = SITE_TITLE,
   description = ABOUT_ME,
-  image = "/hero.png",
+  image = ogImage,
 } = Astro.props;
 import HeroImage from "@/hero.png";
 import { ABOUT_ME, SITE_TITLE } from "@/consts";
