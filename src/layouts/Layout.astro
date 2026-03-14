@@ -10,9 +10,32 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 <html lang="en" class="!overflow-x-hidden">
   <head>
     <BaseHead title={title} description={description} />
+    <script is:inline>
+  const applyTheme = () => {
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+
+    if (theme === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  };
+
+  applyTheme();
+  document.addEventListener('astro:after-swap', applyTheme);
+</script>
+
   </head>
 
-  <body class="bg-black text-white tracking-wide !overflow-x-hidden">
+  <body class="bg-white dark:bg-black text-zinc-900 dark:text-white tracking-wide !overflow-x-hidden transition-colors duration-300">
     <header class="fixed top-0 w-screen z-[9999]"><Navbar /></header>
     <main class="pt-28 md:pt-20"><slot /></main>
     <footer class="w-screen bottom-0 overflow-x-hidden"><Footer /></footer>

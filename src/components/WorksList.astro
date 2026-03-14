@@ -26,32 +26,32 @@ const mugenCharacters = [
 ---
 
 <div class="mt-8">
-  <h2 class="text-3xl font-bold border-b border-zinc-700 pb-2 mb-8 text-white/90">Release</h2>
+  <h2 class="text-3xl font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-8 text-zinc-800 dark:text-white/90">Release</h2>
   
   <!-- HBL App Section -->
   <div class="mb-16">
-    <h3 class="text-2xl font-semibold mb-6 text-blue-400 flex items-center gap-2">
+    <h3 class="text-2xl font-semibold mb-6 text-blue-600 dark:text-blue-400 flex items-center gap-2">
       <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
       HBL App
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {hblApps.map((app) => (
-        <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-600 transition-colors">
+        <div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-blue-400 dark:hover:border-zinc-600 transition-colors shadow-sm dark:shadow-none">
           <img src={app.image} alt={app.title} class="w-full aspect-video object-cover opacity-80 hover:opacity-100 transition-opacity" />
           <div class="p-5">
-            <h4 class="text-2xl font-bold text-white mb-2">{app.title}</h4>
+            <h4 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">{app.title}</h4>
             
             <div class="expandable-wrapper relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-12">
-              <p class="text-base text-zinc-400 leading-relaxed">{app.description}</p>
+              <p class="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">{app.description}</p>
             </div>
             
-            <button class="expand-btn hidden mt-2 mb-4 text-xs text-blue-400 font-bold uppercase tracking-widest flex items-center gap-1 self-start hover:text-blue-300 transition-colors">
+            <button class="expand-btn hidden mt-2 mb-4 text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest flex items-center gap-1 self-start hover:text-blue-500 transition-colors">
               <span class="btn-text">See More</span>
               <span class="btn-icon">↓</span>
             </button>
 
             <div class="flex gap-3">
-              <a href={app.youtube} target="_blank" class="text-xs bg-red-900/30 hover:bg-red-900/50 text-red-200 py-2 px-4 rounded-md transition-colors flex items-center gap-2 border border-red-900/50">
+              <a href={app.youtube} target="_blank" class="text-xs bg-red-600 dark:bg-red-900/30 hover:bg-red-700 dark:hover:bg-red-900/50 text-white dark:text-red-200 py-2 px-4 rounded-md transition-colors flex items-center gap-2 border border-red-600 dark:border-red-900/50">
                 YouTube
               </a>
               <a href={app.github} target="_blank" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-white py-2 px-4 rounded-md transition-colors flex items-center gap-2">
@@ -64,17 +64,17 @@ const mugenCharacters = [
     </div>
   </div>
 
-  <h2 class="text-3xl font-bold border-b border-zinc-700 pb-2 mb-8 text-white/90">In The Making</h2>
+  <h2 class="text-3xl font-bold border-b border-zinc-200 dark:border-zinc-700 pb-2 mb-8 text-zinc-800 dark:text-white/90">In The Making</h2>
 
   <!-- M.U.G.E.Nキャラ Section -->
   <div class="mb-16">
-    <h3 class="text-2xl font-semibold mb-6 text-blue-400 flex items-center gap-2">
+    <h3 class="text-2xl font-semibold mb-6 text-blue-600 dark:text-blue-400 flex items-center gap-2">
       <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
       M.U.G.E.Nキャラ
     </h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {mugenCharacters.map((char) => (
-        <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-600 transition-colors">
+        <div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-blue-400 dark:hover:border-zinc-600 transition-colors shadow-sm dark:shadow-none">
           {typeof char.image === "string" ? (
             <img
               src={char.image}
@@ -93,17 +93,17 @@ const mugenCharacters = [
             />
           )}
           <div class="p-3">
-            <div class="text-xs text-purple-400/80 font-mono mb-1 tracking-widest uppercase">
+            <div class="text-xs text-purple-600 dark:text-purple-400/80 font-mono mb-1 tracking-widest uppercase">
               Updated: {char.lastUpdated}
             </div>
-            <h4 class="text-lg font-bold text-white mb-3 truncate">{char.name}</h4>
+            <h4 class="text-lg font-bold text-zinc-900 dark:text-white mb-3 truncate">{char.name}</h4>
             
             <div class="space-y-2">
-              <div class="flex justify-between text-sm text-zinc-400 mb-1">
+              <div class="flex justify-between text-sm text-zinc-500 dark:text-zinc-400 mb-1">
                 <span>Progress</span>
                 <span>{char.progress}%</span>
               </div>
-              <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+              <div class="w-full bg-zinc-200 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
                 <div class="bg-gradient-to-r from-purple-600 to-blue-500 h-full rounded-full transition-all duration-1000" style={`width: ${char.progress}%`}></div>
               </div>
             </div>

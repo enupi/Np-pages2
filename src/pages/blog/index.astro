@@ -73,14 +73,14 @@ try {
 -->
 
 <main class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8 text-white">Blog Posts</h1>
+    <h1 class="text-3xl font-bold mb-8 text-zinc-900 dark:text-white">Blog Posts</h1>
 
     <div class="mb-10">
       <input 
         type="text" 
         id="search-bar" 
         placeholder="記事を検索..." 
-        class="w-full p-3 rounded-lg bg-zinc-900 border border-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
       />
     </div>
 
@@ -101,21 +101,23 @@ try {
 </Layout>
 
 <script>
-  const searchBar = document.getElementById('search-bar') as HTMLInputElement;
-  const postItems = document.querySelectorAll('.post-item');
+  document.addEventListener('astro:page-load', () => {
+    const searchBar = document.getElementById('search-bar') as HTMLInputElement;
+    const postItems = document.querySelectorAll('.post-item');
 
-  searchBar?.addEventListener('input', (e) => {
-    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+    searchBar?.addEventListener('input', (e) => {
+      const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
 
-    postItems.forEach((item) => {
-      const title = item.querySelector('h4')?.textContent?.toLowerCase() || "";
-      const description = item.querySelector('p')?.textContent?.toLowerCase() || "";
-      
-      if (title.includes(searchTerm) || description.includes(searchTerm)) {
-        (item as HTMLElement).style.display = 'flex';
-      } else {
-        (item as HTMLElement).style.display = 'none';
-      }
+      postItems.forEach((item) => {
+        const title = item.querySelector('h4')?.textContent?.toLowerCase() || "";
+        const description = item.querySelector('p')?.textContent?.toLowerCase() || "";
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+          (item as HTMLElement).style.display = 'flex';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
     });
   });
 </script>
