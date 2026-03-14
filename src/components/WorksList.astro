@@ -36,19 +36,14 @@ const mugenCharacters = [
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {hblApps.map((app) => (
-        <div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-blue-400 dark:hover:border-zinc-600 transition-colors shadow-sm dark:shadow-none">
+        <div class="work-card bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-blue-400 dark:hover:border-zinc-600 transition-colors shadow-sm dark:shadow-none">
           <img src={app.image} alt={app.title} class="w-full aspect-video object-cover opacity-80 hover:opacity-100 transition-opacity" />
           <div class="p-5">
             <h4 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">{app.title}</h4>
             
-            <div class="expandable-wrapper relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-12">
+            <div class="expandable-wrapper relative overflow-hidden transition-[max-height] duration-500 ease-in-out max-h-12 mb-4">
               <p class="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">{app.description}</p>
             </div>
-            
-            <button class="expand-btn hidden mt-2 mb-4 text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-widest flex items-center gap-1 self-start hover:text-blue-500 transition-colors">
-              <span class="btn-text">See More</span>
-              <span class="btn-icon">↓</span>
-            </button>
 
             <div class="flex gap-3">
               <a href={app.youtube} target="_blank" class="text-xs bg-red-600 dark:bg-red-900/30 hover:bg-red-700 dark:hover:bg-red-900/50 text-white dark:text-red-200 py-2 px-4 rounded-md transition-colors flex items-center gap-2 border border-red-600 dark:border-red-900/50">
@@ -114,3 +109,54 @@ const mugenCharacters = [
     </div>
   </div>
 </div>
+
+<style>
+  .expandable-wrapper.expanded {
+    max-height: 2000px; /* 展開時に本文が収まりきる十分な高さを確保 */
+  }
+</style>
+
+<script>
+  function initExpandableCards() {
+    const cards = document.querySelectorAll('.work-card');
+    
+    cards.forEach(card => {
+      const wrapper = card.querySelector('.expandable-wrapper');
+      
+      if (!wrapper) return;
+
+      const checkOverflow = () => {
+        if (wrapper.classList.contains('expanded')) return;
+        // テキストがコンテナの高さ(48px)を超えているかチェック
+        if (wrapper.scrollHeight > wrapper.clientHeight) {
+          card.classList.add('cursor-pointer');
+          (card as HTMLElement).dataset.expandable = 'true';
+        } else {
+          card.classList.remove('cursor-pointer');
+          (card as HTMLElement).dataset.expandable = 'false';
+        }
+      };
+
+      // 初回表示時のオーバーフロー判定
+      checkOverflow();
+
+      // イベントの重複登録を防止
+      if (!card.hasAttribute('data-init')) {
+        card.addEventListener('click', (e) => {
+          // YouTube等のリンク(aタグ)がクリックされた時は展開処理をキャンセル
+          if (e.target && (e.target instanceof Element) && e.target.closest('a')) return;
+          
+          // 長い文章がある場合のみ伸び縮みさせる
+          if ((card as HTMLElement).dataset.expandable === 'true') {
+            wrapper.classList.toggle('expanded');
+          }
+        });
+        card.setAttribute('data-init', 'true');
+        window.addEventListener('resize', checkOverflow);
+      }
+    });
+  }
+
+  initExpandableCards();
+  document.addEventListener('astro:after-swap', initExpandableCards);
+</script>

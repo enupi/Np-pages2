@@ -102,14 +102,14 @@ const aboutMeCards = [
     ]
   },
   {
-    title: "My Fave",
+    title: "My Faves",
     hobbies: [
       { label: "Game", value: "Osu!, SOUND VOLTEX, Beatmania IIDX, アークナイツ：エンドフィールド, SPLATOON (無印〜3), M.U.G.E.N" },
       { label: "Artist", value: "Yunomi, somunia, EmoCosine, かたぎり, かぼちゃ, かねこちはる, Halv,  ..." },
       { label: "Misc", value: "アニメ〜〜🤞" },
     ]
   },
-  { title: "Language I Use", tech: uniqueTech },
+  { title: "Languages I Use", tech: uniqueTech },
   //{ title: "PC環境", content: "Windows Desktop (自作) / MacBook Air" },
 
   //{ title: "書きそうな記事の分野", content: "技術備忘録, M.U.G.E.N 開発進捗, 大学生活" },
@@ -302,64 +302,4 @@ const aboutMeCards = [
   #work, #link, #about {
     scroll-margin-top: 5rem;
   }
-
-  .expandable-wrapper.expanded {
-    max-height: 2000px; /* 十分な高さを確保 */
-  }
 </style>
-
-<script>
-  function setupExpandableCards() {
-    const wrappers = document.querySelectorAll('.expandable-wrapper');
-    const isFirstTime = !(window as any)._expandableCardsInitialized;
-
-    wrappers.forEach(wrapper => {
-      const button = wrapper.nextElementSibling as HTMLElement;
-      if (!button || !button.classList.contains('expand-btn')) return;
-
-      const card = wrapper.closest('.bg-zinc-900\\/50') as HTMLElement;
-      if (!card) return;
-
-      const checkOverflow = (targetWrapper: Element, targetButton: HTMLElement, targetCard: HTMLElement) => {
-        if (wrapper.classList.contains('expanded')) return;
-        // clientHeight(160px) に対して実際のコンテンツ(scrollHeight)が大きいか
-        if (targetWrapper.scrollHeight > targetWrapper.clientHeight) {
-          targetButton.classList.remove('hidden');
-          targetCard.classList.add('cursor-pointer');
-        } else {
-          targetButton.classList.add('hidden');
-          targetCard.classList.remove('cursor-pointer');
-        }
-      };
-
-      // 初回実行時のみリスナーを登録
-      if (isFirstTime) {
-        window.addEventListener('resize', () => checkOverflow(wrapper, button, card));
-        card.addEventListener('click', (e) => {
-          const target = e.target as HTMLElement;
-          if (target.closest('a')) return;
-          if (button.classList.contains('hidden') && !wrapper.classList.contains('expanded')) return;
-
-          const isExpanded = wrapper.classList.toggle('expanded');
-          button.querySelector('.btn-text')!.textContent = isExpanded ? 'Back' : 'See More';
-          button.querySelector('.btn-icon')!.textContent = isExpanded ? '↑' : '↓';
-          
-          if (!isExpanded) {
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        });
-      }
-
-      // 表示状態のチェックを実行（少し遅延させてレイアウト確定を待つ）
-      requestAnimationFrame(() => checkOverflow(wrapper, button, card));
-    });
-
-    (window as any)._expandableCardsInitialized = true;
-  }
-
-  // 通常のロード時
-  setupExpandableCards();
-
-  // ブラウザの「戻る」で戻った時（bfcache対応）
-  window.addEventListener('pageshow', setupExpandableCards);
-</script>
