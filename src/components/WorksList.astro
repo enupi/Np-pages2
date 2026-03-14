@@ -1,8 +1,6 @@
 ---
-/*
 import { Image } from "astro:assets";
-import risajuImage from "@/assets/risaju.png";
-*/
+import csharpLogo from "@/assets/csharp-logo.svg";
 
 // HBL App のデータ定義
 const hblApps = [
@@ -19,8 +17,7 @@ const hblApps = [
 const mugenCharacters = [
   {
     name: "りさじゅう",
-  //  image: risajuImage,
-    image: "/assets/csharp-logo.svg",
+    image: csharpLogo,
     progress: 0.5,
     lastUpdated: "2025.12.22",
     twitter: "https://x.com/np_mugen",
@@ -78,11 +75,11 @@ const mugenCharacters = [
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {mugenCharacters.map((char) => (
         <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-600 transition-colors">
-          <img 
+          <Image 
             src={char.image} 
             alt={char.name}
-            //width={400}
-            //height={533}
+            width={400}
+            height={533}
             class="w-full aspect-[3/4] object-cover object-top opacity-80 hover:opacity-100 transition-opacity" 
             style="image-rendering: pixelated;"
           />
@@ -95,10 +92,10 @@ const mugenCharacters = [
             <div class="space-y-2">
               <div class="flex justify-between text-sm text-zinc-400 mb-1">
                 <span>Progress</span>
-                <span>{char.progress}%</span>
+                <span>{char.progress * 100}%</span>
               </div>
               <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-gradient-to-r from-purple-600 to-blue-500 h-full rounded-full transition-all duration-1000" style={`width: ${char.progress}%`}></div>
+                <div class="bg-gradient-to-r from-purple-600 to-blue-500 h-full rounded-full transition-all duration-1000" style={`width: ${char.progress * 100}%`}></div>
               </div>
             </div>
             <a href={char.twitter} target="_blank" class="mt-4 flex items-center justify-center gap-1.5 text-[10px] bg-[#1DA1F2]/10 hover:bg-[#1DA1F2]/20 text-[#1DA1F2] py-1.5 rounded-md transition-colors border border-[#1DA1F2]/20">進捗報告</a>
