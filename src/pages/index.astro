@@ -14,6 +14,7 @@ import twitterIcon from "@/assets/Logo_of_Twitter.svg.png";
 import noteIcon from "@/assets/Logo_of_Note.svg";
 import powerpcIcon from "@/assets/PowerPC_icon.png";
 import csharpIcon from "@/assets/csharp-logo.svg";
+import whitespaceCode from "@/whitespace.ws?raw";
 
 /*
 const posts = (await getCollection("blog")).sort(
@@ -95,7 +96,7 @@ const aboutMeCards = [
     description: [
       "電気通信大学 情報理工学域 Ⅰ類の Np / えぬぴーです。",
       "Switch 向けの Homebrew 開発と M.U.G.E.N のキャラクター制作をしています。",
-      "最近は Arch の Ricingとこのサイトに使っている Astro を始めて両方の沼に沈んでます。",
+      "最近は Arch の Ricingとこのサイトに使っている Astro を始めて両方の沼に沈んでいるところです。",
       "blender も勉強中です。今はアニメキャラを作ってます。",
       "いろんなものを作っていきたいです (ovo)"
     ]
@@ -113,8 +114,7 @@ const aboutMeCards = [
 
   //{ title: "書きそうな記事の分野", content: "技術備忘録, M.U.G.E.N 開発進捗, 大学生活" },
   { title: "Contact", content: '重要な連絡は Twitter (<a href="https://x.com/Np271828" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline underline-offset-4 hover:text-blue-300 transition-colors">@Np271828</a>) のDMにお願いします' },
-  { title: "こんなところに丁度いい余白が...?", content: "特に中身はありませんが、ここにあるとなんだか落ち着きますね。" },
-  
+  { title: "こんなところに丁度いい余白が...?", content: `<div class="w-full bg-zinc-100 dark:bg-zinc-800/50 p-4 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-x-auto"><pre class="text-xs text-zinc-600 dark:text-zinc-300"><code>${whitespaceCode}</code></pre></div>` },
 ];
 
 ---
@@ -264,7 +264,7 @@ const aboutMeCards = [
                 {item.description.map((line) => <p>{line}</p>)}
               </div>
             ) : (
-              <p class="text-zinc-600 dark:text-zinc-300 text-base leading-relaxed" set:html={item.content}></p>
+              <div class="text-zinc-600 dark:text-zinc-300 text-base leading-relaxed w-full" set:html={item.content}></div>
             )}
           </div>
         ))
