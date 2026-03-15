@@ -9,7 +9,7 @@ export const ABOUT_ME =
   "電気通信大学 情報理工学域 Ⅰ類の Np / えぬぴーです。Switch 向けの Homebrew 開発と M.U.G.E.N のキャラクター制作をしています。";
 export const GITHUB_USERNAME = "enupi";
 
-export const QUOTE = "えぬぴーのホームページだよ";
+export const QUOTE = "えぬぴーのホームページだよ。";
 
 export const NAV_LINKS: Array<{ title: string; href?: string }> = [
   {
