@@ -1,5 +1,5 @@
 export const SITE_TITLE = "Np's pages";
-export const SITE_DESCRIPTION = "えぬぴーのサイトだよ。";
+export const SITE_DESCRIPTION = "えぬぴーのホームページだよ。";
 
 export const KNOWN_TECH =
   `Astro,tailwindcss,vuedotjs,Javascript,CSS,HTML5,C++,C,C#,Pandas,Python,Ruby,R,Arm,PowerPC`.split(
