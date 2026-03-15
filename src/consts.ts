@@ -1,5 +1,5 @@
 export const SITE_TITLE = "Np's pages";
-export const SITE_DESCRIPTION = "電気通信大学 情報理工学域 Ⅰ類の Np / えぬぴーです。Switch 向けの Homebrew 開発と M.U.G.E.N のキャラクター制作をしています。";
+export const SITE_DESCRIPTION = "えぬぴーのサイトだよ。";
 
 export const KNOWN_TECH =
   `Astro,tailwindcss,vuedotjs,Javascript,CSS,HTML5,C++,C,C#,Pandas,Python,Ruby,R,Arm,PowerPC`.split(
